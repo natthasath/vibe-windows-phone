@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows Phone News</title>
+    <meta name="description" content="Windows Phone style news with categories and auto-swapping tiles">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;600&display=swap');
+        
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #000;
+            color: #fff;
+        }
+        
+        .tile {
+            transition: all 0.3s ease;
+        }
+        
+        .tile:hover {
+            transform: scale(0.98);
+            opacity: 0.9;
+        }
+        
+        .tech-tile {
+            background: linear-gradient(135deg, #0063B1 0%, #004E8C 100%);
+        }
+        
+        .business-tile {
+            background: linear-gradient(135deg, #107C10 0%, #0E5E0E 100%);
+        }
+        
+        .science-tile {
+            background: linear-gradient(135deg, #5C2D91 0%, #4A2580 100%);
+        }
+        
+        .sports-tile {
+            background: linear-gradient(135deg, #E81123 0%, #C50F1F 100%);
+        }
+        
+        .weather-tile {
+            background: linear-gradient(135deg, #0078D7 0%, #0063B1 100%);
+        }
+        
+        .image-tile {
+            background: linear-gradient(135deg, #505050 0%, #303030 100%);
+        }
+        
+        .category-chip {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <header class="bg-black py-4 px-6">
+        <div class="flex items-center">
+            <h1 class="text-2xl font-light">news</h1>
+            <div class="ml-auto flex space-x-4">
+                <button class="text-white">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="text-white">
+                    <i class="fas fa-ellipsis-h"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-6 pb-16">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="tiles-container">
+            <!-- Tiles will be generated here -->
+        </div>
+    </main>
+
+    <nav class="fixed bottom-0 left-0 right-0 bg-black py-3 px-6 flex justify-around">
+        <button class="text-white text-center">
+            <i class="fas fa-home block text-xl mb-1"></i>
+            <span class="text-xs">home</span>
+        </button>
+        <button class="text-white text-center">
+            <i class="fas fa-newspaper block text-xl mb-1"></i>
+            <span class="text-xs">news</span>
+        </button>
+        <button class="text-white text-center">
+            <i class="fas fa-image block text-xl mb-1"></i>
+            <span class="text-xs">photos</span>
+        </button>
+        <button class="text-white text-center">
+            <i class="fas fa-cog block text-xl mb-1"></i>
+            <span class="text-xs">settings</span>
+        </button>
+    </nav>
+
+    <script>
+        // Categories and sample data
+        const categories = {
+            tech: {
+                name: "Technology",
+                color: "tech-tile"
+            },
+            business: {
+                name: "Business",
+                color: "business-tile"
+            },
+            science: {
+                name: "Science",
+                color: "science-tile"
+            },
+            sports: {
+                name: "Sports",
+                color: "sports-tile"
+            },
+            weather: {
+                name: "Weather",
+                color: "weather-tile"
+            }
+        };
+
+        const newsItems = [
+            {
+                title: "New Smartphone Unveiled with Breakthrough Features",
+                summary: "The latest flagship device includes revolutionary camera technology and all-day battery life.",
+                time: "2 hours ago",
+                category: "tech"
+            },
+            {
+                title: "Stock Markets Reach All-Time High",
+                summary: "Global markets surge as economic recovery exceeds expectations.",
+                time: "5 hours ago",
+                category: "business"
+            },
+            {
+                title: "Researchers Discover Potential Cancer Treatment",
+                summary: "Clinical trials show promising results for new immunotherapy approach.",
+                time: "1 day ago",
+                category: "science"
+            },
+            {
+                title: "Underdog Team Wins Championship Finals",
+                summary: "In a stunning upset, the underdogs defeated the reigning champions.",
+                time: "2 days ago",
+                category: "sports"
+            },
+            {
+                title: "Hurricane Warning Issued for Coastal Areas",
+                summary: "Residents advised to evacuate as category 4 storm approaches.",
+                time: "3 days ago",
+                category: "weather"
+            },
+            {
+                title: "AI Breakthrough Could Revolutionize Industries",
+                summary: "New algorithm demonstrates human-level performance on complex tasks.",
+                time: "4 hours ago",
+                category: "tech"
+            },
+            {
+                title: "Major Merger Creates Industry Giant",
+                summary: "Two leading companies join forces in $50 billion deal.",
+                time: "7 hours ago",
+                category: "business"
+            }
+        ];
+
+        // Generate random tiles with categories and auto-swapping
+        function generateTiles() {
+            const container = document.getElementById('tiles-container');
+            container.innerHTML = '';
+            
+            // Determine number of tiles (between 6-12)
+            const tileCount = Math.floor(Math.random() * 7) + 6;
+            
+            for (let i = 0; i < tileCount; i++) {
+                // Randomly decide if this will be a news or image tile (60/40 chance)
+                const isNewsTile = Math.random() > 0.4;
+                
+                if (isNewsTile && newsItems.length > 0) {
+                    // Create news tile with category
+                    const randomNews = newsItems[Math.floor(Math.random() * newsItems.length)];
+                    const category = categories[randomNews.category];
+                    
+                    const tile = document.createElement('div');
+                    tile.className = `tile ${category.color} p-6 rounded-lg shadow-lg flex flex-col justify-between h-64`;
+                    
+                    tile.innerHTML = `
+                        <div>
+                            <span class="category-chip">${category.name}</span>
+                            <h2 class="text-xl font-light mt-2 mb-2">${randomNews.title}</h2>
+                            <p class="text-sm opacity-80">${randomNews.summary}</p>
+                        </div>
+                        <div class="text-xs opacity-60">${randomNews.time}</div>
+                    `;
+                    
+                    container.appendChild(tile);
+                } else {
+                    // Create image tile with random category
+                    const categoryKeys = Object.keys(categories);
+                    const randomCategory = categoryKeys[Math.floor(Math.random() * categoryKeys.length)];
+                    const category = categories[randomCategory];
+                    
+                    const tile = document.createElement('div');
+                    tile.className = `tile image-tile p-6 rounded-lg shadow-lg flex flex-col justify-between h-64 overflow-hidden`;
+                    
+                    tile.innerHTML = `
+                        <div class="relative h-full">
+                            <img 
+                                src="https://picsum.photos/600/400?random=${i}&category=${randomCategory}" 
+                                alt="${category.name} related image" 
+                                class="absolute inset-0 w-full h-full object-cover rounded-lg"
+                                loading="lazy"
+                            />
+                            <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 p-4">
+                                <span class="category-chip">${category.name}</span>
+                                <p class="text-sm mt-1">Photo ${i+1}</p>
+                            </div>
+                        </div>
+                    `;
+                    
+                    container.appendChild(tile);
+                }
+            }
+        }
+
+        // Initial generation
+        generateTiles();
+        
+        // Refresh tiles every 20 seconds with animation
+        setInterval(() => {
+            document.getElementById('tiles-container').style.opacity = '0.5';
+            setTimeout(() => {
+                generateTiles();
+                document.getElementById('tiles-container').style.opacity = '1';
+            }, 300);
+        }, 20000);
+    </script>
+</body>
+</html>
