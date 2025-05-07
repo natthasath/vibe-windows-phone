@@ -1,0 +1,384 @@
+/* Global Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', 'Roboto', sans-serif;
+}
+
+body {
+    background-color: #000000;
+    color: white;
+}
+
+.phone-container {
+    max-width: 1600px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background-color: #000000;
+    overflow-y: auto;
+    position: relative;
+    padding-bottom: 30px;
+}
+
+/* Header */
+.app-header {
+    padding: 20px 15px 30px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #000000;
+}
+
+.app-header h1 {
+    font-size: 36px;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+    color: white;
+}
+
+/* Tiles Container */
+.tiles-container {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 16px;
+    gap: 16px;
+    justify-content: flex-start;
+}
+
+/* Tiles */
+.tile {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.3s;
+    border-radius: 2px;
+}
+
+.tile:active {
+    transform: scale(0.98);
+}
+
+.tile:hover {
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+.tile-small {
+    width: 150px;
+    height: 150px;
+}
+
+.tile-medium {
+    width: 240px;
+    height: 240px;
+}
+
+.tile-large {
+    width: 496px;
+    height: 240px;
+}
+
+.tile-wide {
+    width: 320px;
+    height: 150px;
+}
+
+/* Tile Colors for Windows Phone look */
+.tile-blue { background-color: #2672ec; }
+.tile-red { background-color: #ee1111; }
+.tile-green { background-color: #00a300; }
+.tile-purple { background-color: #8c0095; }
+.tile-orange { background-color: #ff8c00; }
+.tile-teal { background-color: #00aba9; }
+.tile-lime { background-color: #8cbf26; }
+.tile-magenta { background-color: #ff0097; }
+.tile-brown { background-color: #a05000; }
+.tile-pink { background-color: #e671b8; }
+
+/* Tile Content */
+.tile-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px 15px;
+    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+}
+
+.tile h3 {
+    font-size: 16px;
+    font-weight: normal;
+    margin-bottom: 5px;
+}
+
+.tile p {
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+.tile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.3s ease;
+}
+
+/* For tiles with background images */
+.tile-with-image .tile-content {
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+}
+
+/* Loading animation */
+.loading {
+    text-align: center;
+    padding: 20px;
+    font-size: 14px;
+}
+
+/* For the live tile animation */
+@keyframes tileSlide {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-100%); }
+}
+
+.live-tile {
+    position: relative;
+    overflow: hidden;
+}
+
+.live-tile-content {
+    animation: tileSlide 5s infinite alternate ease-in-out;
+}
+
+/* Hover effect - image to text swap */
+.tile-front,
+.tile-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    transition: transform 0.6s ease, opacity 0.6s ease;
+}
+
+.tile-front {
+    z-index: 2;
+}
+
+.tile-back {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+}
+
+.tile:hover .tile-front {
+    opacity: 0;
+}
+
+.tile:hover .tile-back {
+    opacity: 1;
+}
+
+/* News detail modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 100;
+    overflow-y: auto;
+}
+
+.modal-content {
+    background-color: #1e1e1e;
+    margin: 5% auto;
+    padding: 20px;
+    width: 80%;
+    max-width: 800px;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+    position: relative;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.news-image {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    margin-bottom: 20px;
+}
+
+.news-category {
+    display: inline-block;
+    padding: 5px 10px;
+    margin-bottom: 10px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.news-title {
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+.news-content {
+    line-height: 1.6;
+}
+
+/* Category filter */
+.category-filter {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 16px 20px;
+    gap: 10px;
+    position: sticky;
+    top: 86px;
+    z-index: 9;
+    background-color: #000000;
+}
+
+.filter-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 20px;
+    background-color: #333;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.filter-btn.active {
+    background-color: #2672ec;
+}
+
+.filter-btn:hover:not(.active) {
+    background-color: #444;
+}
+
+@media (max-width: 480px) {
+    .phone-container {
+        padding: 0;
+    }
+
+    .app-header {
+        padding: 15px;
+    }
+
+    .app-header h1 {
+        font-size: 28px;
+    }
+
+    .tiles-container {
+        padding: 0 8px;
+        gap: 8px;
+    }
+
+    .tile-small {
+        width: calc(50% - 4px);
+        height: 120px;
+    }
+
+    .tile-medium {
+        width: 100%;
+        height: 180px;
+    }
+
+    .tile-large, .tile-wide {
+        width: 100%;
+        height: 200px;
+    }
+
+    .tile h3 {
+        font-size: 14px;
+    }
+
+    .tile p {
+        font-size: 11px;
+    }
+
+    .tile-back {
+        padding: 10px;
+    }
+
+    .category-filter {
+        padding: 0 8px 15px;
+        top: 58px;
+    }
+
+    .filter-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .tiles-container {
+        padding: 0 24px;
+        gap: 24px;
+    }
+
+    .tile-small {
+        width: 180px;
+        height: 180px;
+    }
+
+    .tile-medium {
+        width: 280px;
+        height: 280px;
+    }
+
+    .tile-large {
+        width: 584px;
+        height: 280px;
+    }
+
+    .tile-wide {
+        width: 380px;
+        height: 180px;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 1024px) {
+    .phone-container {
+        padding: 0 12px;
+    }
+
+    .tiles-container {
+        padding: 0 12px;
+        gap: 12px;
+    }
+
+    .tile-small {
+        width: 160px;
+        height: 160px;
+    }
+
+    .tile-medium {
+        width: 260px;
+        height: 260px;
+    }
+
+    .tile-large {
+        width: 532px;
+        height: 260px;
+    }
+
+    .tile-wide {
+        width: 340px;
+        height: 160px;
+    }
+} 
